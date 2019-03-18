@@ -14,7 +14,7 @@ const server = http.createServer(app);
 const socketIo = require('socket.io');
 const io = socketIo(server);
 
-//app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname,"public")));
 
 app.get("/",(req,res) => {
     res.send("<h1>shit</h1>");

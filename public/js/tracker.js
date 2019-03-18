@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded",() => {
-    const socket = io('http://localhost');
+    const socket = io('/');
 
     const positionOptions = {
         enableHighAccuracy : true,
