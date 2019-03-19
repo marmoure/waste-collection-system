@@ -17,7 +17,7 @@ const io = socketIo(server);
 app.use(express.static(path.join(__dirname,"public")));
 
 app.get("/",(req,res) => {
-    res.send("<h1>shit</h1>");
+    res.send();
 });
 io.on("connection", socket => {
     socket.on("_ping", () => {
@@ -44,14 +44,24 @@ const options = {
 
 const client  = mqtt.connect('tcp://m16.cloudmqtt.com:15142',options)
 
+let map = new Map();;
 
 client.on('connect',  () => {
-    client.subscribe('presence', function (err) {
+    client.subscribe('here',(err) => {
       if (!err) {
-        client.publish('presence', 'Hello mqtt');
+        client.publish('alive', "who's there");
       }
     });
-  });
-  client.on('message', (topic, message) => {
-
-  });
+});
+client.on('message', (topic, message) => {
+    if(topic.toString() === "here") {
+        const device = message.toString();
+        client.subscribe(device);
+        map.set(device,{
+            temp:20,
+            humid:50
+        });
+        console.log(device);
+        console.log(map)
+    }
+});
