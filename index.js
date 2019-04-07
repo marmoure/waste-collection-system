@@ -26,7 +26,15 @@ io.on("connection", socket => {
     });
 });
 server.listen(3000, err => {
-    if(err){
+   
+const path = require("path");
+const http = require("http");
+const express = require("express");
+const bodyParser = require("body-parser");
+
+const mqtt = require('mqtt');
+
+ if(err){
         throw err;
     }
     console.log("server running on port 3000");
@@ -40,16 +48,16 @@ const options = {
     clientId: "nodeserver1",
     username: "fchlyhyo",
     password: "88Y3R_KV7BMT"
-}
+};
 
-const client  = mqtt.connect('tcp://m16.cloudmqtt.com:15142',options)
+const client  = mqtt.connect('tcp://m16.cloudmqtt.com:15142',options);
 
-let map = new Map();;
+let map = new Map();
 
 client.on('connect',  () => {
     client.subscribe('here',(err) => {
       if (!err) {
-        client.publish('alive', "who's there");
+        //client.publish('alive', "who's there");
       }
     });
 });
@@ -65,3 +73,7 @@ client.on('message', (topic, message) => {
         console.log(map)
     }
 });
+
+setInterval(() => {
+    client.publish('alive', "who's there");
+},7000);

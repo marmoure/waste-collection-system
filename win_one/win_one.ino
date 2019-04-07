@@ -1,4 +1,3 @@
-
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
@@ -44,6 +43,7 @@ void reconnect() {
       delay(5000);
     }
   }
+  client.subscribe("alive");
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
