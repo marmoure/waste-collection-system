@@ -1,13 +1,9 @@
 "use strcit";
-
+//server part
 const path = require("path");
 const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
-
-const mqtt = require('mqtt');
-
-
 
 const app = express();
 const server = http.createServer(app);
@@ -26,13 +22,7 @@ io.on("connection", socket => {
     });
 });
 server.listen(3000, err => {
-   
-const path = require("path");
-const http = require("http");
-const express = require("express");
-const bodyParser = require("body-parser");
 
-const mqtt = require('mqtt');
 
  if(err){
         throw err;
@@ -40,7 +30,7 @@ const mqtt = require('mqtt');
     console.log("server running on port 3000");
 });
 
-
+const mqtt = require('mqtt');
 const options = {
     protocolId: 'MQTT', // Or 'MQIsdp' in MQTT 3.1 and 5.0
     protocolVersion: 4, // Or 3 in MQTT 3.1, or 5 in MQTT 5.0
@@ -49,10 +39,8 @@ const options = {
     username: "fchlyhyo",
     password: "88Y3R_KV7BMT"
 };
-
 const client  = mqtt.connect('tcp://m16.cloudmqtt.com:15142',options);
 
-let map = new Map();
 
 client.on('connect',  () => {
     client.subscribe('here',(err) => {
@@ -61,19 +49,36 @@ client.on('connect',  () => {
       }
     });
 });
+
+let map = new Map();
+
 client.on('message', (topic, message) => {
     if(topic.toString() === "here") {
-        const device = message.toString();
-        client.subscribe(device);
-        map.set(device,{
-            temp:20,
-            humid:50
-        });
-        console.log(device);
-        console.log(map)
+        const payload = message.toString();
+        const {id , data} = JSON.parse(payload);
+        console.log(data);
+        console.log(id);
+        map.set(id,data);
+        console.log(map);
     }
 });
 
 setInterval(() => {
     client.publish('alive', "who's there");
 },7000);
+/*
+const obj = {
+    id:"arduino",
+    data:{
+        temp:0,
+        humid:0,
+        full:0,
+        active:false
+    }
+};
+*/
+
+/*
+{"id":"arduino","data":{"temp":0,"humid":0,"full":0,"active":false}}
+*/
+
