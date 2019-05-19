@@ -6,16 +6,17 @@
 #include <PubSubClient.h>
 #include <SoftwareSerial.h>
 
-#define WIFI_AP "DJAWEB"
+#define WIFI_AP "trynda"
 #define WIFI_PASSWORD "NOUSSA004"
 
-#define TOKEN "7a77RuA2FvwaRBeaX7u8"
+const char* mqtt_server = "m16.cloudmqtt.com";
 
+const char *mqtt_user = "fchlyhyo";
+const char *mqtt_pass = "88Y3R_KV7BMT";
 // DHT
 #define DHTPIN 4
 #define DHTTYPE DHT11
 
-char thingsboardServer[] = "demo.thingsboard.io";
 
 // Initialize the Ethernet client object
 WiFiEspClient espClient;
@@ -35,7 +36,8 @@ void setup() {
   Serial.begin(9600);
   dht.begin();
   InitWiFi();
-  client.setServer( thingsboardServer, 1883 );
+  client.setServer(mqtt_server, 15142);
+  client.setCallback(callback);
   lastSend = 0;
 }
 
@@ -79,33 +81,21 @@ void getAndSendTemperatureAndHumidityData()
     return;
   }
 
-  Serial.print("Humidity: ");
-  Serial.print(h);
-  Serial.print(" %\t");
-  Serial.print("Temperature: ");
-  Serial.print(t);
-  Serial.print(" *C ");
-
   String temperature = String(t);
   String humidity = String(h);
 
-
-  // Just debug messages
-  Serial.print( "Sending temperature and humidity : [" );
-  Serial.print( temperature ); Serial.print( "," );
-  Serial.print( humidity );
-  Serial.print( "]   -> " );
-
   // Prepare a JSON payload string
   String payload = "{";
-  payload += "\"temperature\":"; payload += temperature; payload += ",";
-  payload += "\"humidity\":"; payload += humidity;
+  payload += "\"temperature\":";
+  payload += temperature; payload += ",";
+  payload += "\"humidity\":"; 
+  payload += humidity;
   payload += "}";
 
-  // Send payload
+
   char attributes[100];
   payload.toCharArray( attributes, 100 );
-  client.publish( "v1/devices/me/telemetry", attributes );
+  client.publish( "arduino uno", attributes );
   Serial.println( attributes );
 }
 
@@ -137,9 +127,8 @@ void InitWiFi()
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Connecting to ThingsBoard node ...");
     // Attempt to connect (clientId, username, password)
-    if ( client.connect("Arduino Uno Device", TOKEN, NULL) ) {
+    if ( client.connect("arduinoUno", mqtt_user, mqtt_pass) ) {
       Serial.println( "[DONE]" );
     } else {
       Serial.print( "[FAILED] [ rc = " );
@@ -148,5 +137,11 @@ void reconnect() {
       // Wait 5 seconds before retrying
       delay( 5000 );
     }
+  }
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  if(!strcmp(topic,"alive")){
+    client.publish("here","arduinoUno");
   }
 }
