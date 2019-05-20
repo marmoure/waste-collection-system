@@ -5,8 +5,8 @@
 #include <PubSubClient.h>
 #include <SoftwareSerial.h>
 
-#define WIFI_AP "trynda"
-#define WIFI_PASSWORD "123456789"
+#define WIFI_AP "DJAWEB_R"
+#define WIFI_PASSWORD "NOUSSA004"
 
 const char* mqtt_server = "m16.cloudmqtt.com";
 
@@ -57,11 +57,10 @@ void loop() {
     reconnect();
   }
 
-  if ( millis() - lastSend > 5000 ) { // Update and send only after 1 seconds
+  if ( millis() - lastSend > 10000 ) { // Update and send only after 1 seconds
     getAndSendTemperatureAndHumidityData();
     lastSend = millis();
   }
-
   client.loop();
 }
 
@@ -77,10 +76,9 @@ void getAndSendTemperatureAndHumidityData()
   // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
-    return;
-  }
-
-  String temperature = String(t);
+  }else 
+  {
+      String temperature = String(t);
   String humidity = String(h);
 
   // Prepare a JSON payload string
@@ -96,6 +94,9 @@ void getAndSendTemperatureAndHumidityData()
   payload.toCharArray( attributes, 100 );
   client.publish( "arduino uno", attributes );
   Serial.println( attributes );
+    
+  }
+
 }
 
 void InitWiFi()

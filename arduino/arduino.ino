@@ -6,7 +6,7 @@
 #include <PubSubClient.h>
 #include <SoftwareSerial.h>
 
-#define WIFI_AP "trynda"
+#define WIFI_AP "DJAWEB_R"
 #define WIFI_PASSWORD "NOUSSA004"
 
 const char* mqtt_server = "m16.cloudmqtt.com";

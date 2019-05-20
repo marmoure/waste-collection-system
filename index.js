@@ -15,12 +15,7 @@ app.use(express.static(path.join(__dirname,"public")));
 app.get("/",(req,res) => {
     res.send();
 });
-io.on("connection", socket => {
-    socket.on("_ping", () => {
-        console.log("pinnng");
-        socket.emit("_pong");
-    });
-});
+
 server.listen(3000, err => {
 
 
@@ -51,6 +46,7 @@ client.on('connect',  () => {
 });
 
 let map = new Map();
+map.set("one",{nothing : 1, two : "shit"});
 
 client.on('message', (topic, message) => {
     if(topic.toString() === "here") {
@@ -66,6 +62,18 @@ client.on('message', (topic, message) => {
 setInterval(() => {
     client.publish('alive', "who's there");
 },7000);
+
+io.on("connection", socket => {
+    socket.on("_ping", () => {
+        console.log("pinnng");
+        socket.emit("_pong");
+    });
+    socket.on("requestData", () => {
+        let transitString = JSON.stringify(Array.from(map));
+        console.log(transitString)
+        socket.emit("mapUpdate",transitString);
+    });
+});
 /*
 const obj = {
     id:"arduino",
@@ -82,3 +90,4 @@ const obj = {
 {"id":"arduino","data":{"temp":0,"humid":0,"full":0,"active":false}}
 */
 
+// {"id":arduino,"data":{"temperature":20.80,"humidity":63.00,"full":0.00}

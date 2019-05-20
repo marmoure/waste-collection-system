@@ -7,10 +7,23 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>	
         <link href='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
+        <link href='css/view.css' rel='stylesheet' />
     </head>
     <body>
         <script src="/socket.io/socket.io.js"></script>
-        <div id="mapid" style="width: 90vw; height: 90vh;"></div>
+        <div id="sidebar">
+            <a href="#">About</a>
+            <br>
+            <a href="#">Services</a>
+            <br>
+            <a href="#">Clients</a>
+            <br>
+            <a href="#">Contact</a>
+            <br>
+            <input type="button" value="Reload Page" onClick="document.location.reload(true)">
+            </div>
+        <div id="content">
+        </div>
         <script src ="/js/view.js"></script>
     </body>
 </html>
