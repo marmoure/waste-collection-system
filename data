@@ -1,0 +1,5 @@
+{"id":"arduino","data":{"temperature":20.80,"humidity":63.00,"full":15.00,"lat":36.083702,"long": 7.258388}}
+{"id":"node","data":{"temperature":20.80,"humidity":63.00,"full":15.00,"lat":36.085332,"long": 7.258828}}
+{"id":"esp","data":{"temperature":20.80,"humidity":63.00,"full":15.00,"lat":36.083798, "long":7.260449}}
+{"id":"wemos","data":{"temperature":20.80,"humidity":63.00,"full":15.00,"lat":36.081951, "long":7.257154}}
+{"id":"wemosd1","data":{"temperature":20.80,"humidity":63.00,"full":15.00,"lat":36.084309, "long":7.257154}}

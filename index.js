@@ -43,13 +43,24 @@ client.on('connect',  () => {
         //client.publish('alive', "who's there");
       }
     });
+    client.subscribe('update',(err) => {
+        if (!err) {
+          //client.publish('alive', "who's there");
+        }
+      });
 });
 
 let map = new Map();
-map.set("one",{nothing : 1, two : "shit"});
+map.set("arduino",
+                    { temperature: 20.8,
+                      humidity: 63,
+                      full: 15,
+                      lat: 36.084032,
+                      long:  7.26024
+                    });
 
 client.on('message', (topic, message) => {
-    if(topic.toString() === "here") {
+    if(topic.toString() === "update") {
         const payload = message.toString();
         const {id , data} = JSON.parse(payload);
         console.log(data);
@@ -74,20 +85,6 @@ io.on("connection", socket => {
         socket.emit("mapUpdate",transitString);
     });
 });
-/*
-const obj = {
-    id:"arduino",
-    data:{
-        temp:0,
-        humid:0,
-        full:0,
-        active:false
-    }
-};
-*/
 
-/*
-{"id":"arduino","data":{"temp":0,"humid":0,"full":0,"active":false}}
-*/
 
-// {"id":arduino,"data":{"temperature":20.80,"humidity":63.00,"full":0.00}
+// {"id":"arduino","data":{"temperature":20.80,"humidity":63.00,"full":15.00,"lat":36.084032,"long":7.26024}}

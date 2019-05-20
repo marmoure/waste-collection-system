@@ -5,25 +5,9 @@ document.addEventListener("DOMContentLoaded",() => {
         enableHighAccuracy : true,
         maxmumAge: 0
     };
-    socket.on("mapUpdate",data => {
-        var newMap = new Map(JSON.parse(data));
-        newMap.forEach(value => {
 
-            console.log(value);
-        })
-    });
     let lgt = 7.260075;
     let lat = 36.083138;
-
-    //36.083138, 7.260075
-    /*
-    navigator.geolocation.getCurrentPosition(pos => {
-        console.log(pos.coords);
-        lgt = pos.coords.longitude
-        lat = pos.coords.latitude;
-    },err => {
-    },positionOptions);
-*/
 
     const mymap = L.map('content').setView([lat, lgt], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -34,8 +18,8 @@ document.addEventListener("DOMContentLoaded",() => {
         }).addTo(mymap);
     //L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFybW91cmUiLCJhIjoiY2p0ZTJ1dzR2MTV4OTRhcWlhM2N4b3RodiJ9.cWMnhaBQo3gf_uL1A90eNA', ).addTo(mymap);
 
-    var popup = L.popup();
-
+    
+    let popup = L.popup();
     function onMapClick(e) {
     popup
         .setLatLng(e.latlng)
@@ -48,7 +32,6 @@ document.addEventListener("DOMContentLoaded",() => {
     var greenIcon = L.icon({
         iconUrl: 'icon/trash.png',
         shadowUrl: '',
-    
         iconSize:     [15, 40], // size of the icon
         shadowSize:   [10, 20], // size of the shadow
         iconAnchor:   [5, 10], // point of the icon which will correspond to marker's location
@@ -56,8 +39,22 @@ document.addEventListener("DOMContentLoaded",() => {
         popupAnchor:  [-3, -10] // point from which the popup should open relative to the iconAnchor
     });
     
-    L.marker([36.083138, 7.260075], {icon: greenIcon}).addTo(mymap).bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-    .openPopup();
+    socket.on("mapUpdate",data => {
+        var newMap = new Map(JSON.parse(data));
+        newMap.forEach(value => {
+            /*
+            { temperature: 20.8,
+                humidity: 63,
+                full: 15,
+                lat: 36.324,
+                long: 7.09 
+            }
+            */
+           
+           let str = "Temp: "+value.temperature + " ℃ "+"Humidity: "+value.humidity+" % "+"full: "+value.full+" %";
+            L.marker([value.lat, value.long], {icon: greenIcon}).addTo(mymap).bindPopup(str).openPopup();
+        });
+    });
 
 });
 
