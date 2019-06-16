@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded",() => {
             /*
             { temperature: 20.8,
                 humidity: 63,
-                full: 15,
+                full: 80,
                 lat: 36.324,
                 long: 7.09 
             }
