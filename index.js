@@ -4,26 +4,61 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
-
+const fs = require("fs");
 const app = express();
+const router= express.Router();
 const server = http.createServer(app);
 const socketIo = require('socket.io');
 const io = socketIo(server);
+const usersData = [];
 
-app.use(express.static(path.join(__dirname,"public")));
-
-app.get("/",(req,res) => {
-    res.send();
+fs.readFile('data.json', 'utf8', function(err, contents) {
+    let str = JSON.parse(contents);
+     str.users.forEach((e) => {
+      usersData.push(e);
+     });
+     console.log(usersData);
 });
 
-server.listen(3000, err => {
+app.use(express.static(path.join(__dirname,"public")));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
+
+app.post("/haja",(req,res) => {
+    const {name,password} = req.body;
+    let type = checkCredentials(name,password);
+    if( type != 0) {
+        console.log(type);
+        if(type == 3)
+            res.redirect(200,'/view.html');
+        if(type == 2)
+            res.redirect(200,'/tech.html');
+        if(type == 1)
+            res.redirect(200,'/view.html');
+    }else {
+        res.redirect(401, '/login.html');
+    }
+});
+server.listen(3000, err => {
 
  if(err){
         throw err;
     }
     console.log("server running on port 3000");
 });
+
+const checkCredentials = (name,pass) => {
+    let valid = 0;
+    usersData.forEach((e) => {
+        if(e.name === name) {
+            if(e.password === pass) {
+                valid = e.type;
+            };
+        };
+    });
+    return valid;
+};
 
 const mqtt = require('mqtt');
 const options = {

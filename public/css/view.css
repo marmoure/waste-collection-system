@@ -4,40 +4,15 @@ html, body {
   margin: 0;
 }
 
-#sidebar, #content {
+#content {
   height: 100%;
   overflow:auto;
   float:left;
   transition: width .35s;
 }
 
-#sidebar {
-  background:white;
-  width: 8%;
-}
-
-#sidebar.collapsed {
-  width: 0;
-}
-
-#sidebar.collapsed + #content {
+#content {
+  background:gray;
   width: 100%;
 }
 
-#content {
-  background:gray;
-  width: 92%;
-}
-
-
-#sidenabar a {
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-}
-
-/* When you mouse over the navigation links, change their color */
-#sidebar a:hover {
-  color: #f1f1f1;
-}

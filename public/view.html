@@ -8,20 +8,33 @@
         <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>	
         <link href='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
         <link href='css/view.css' rel='stylesheet' />
+        <link rel="stylesheet" href="./css/bootstrap.css">
     </head>
     <body>
         <script src="/socket.io/socket.io.js"></script>
-        <div id="sidebar">
-            <a href="#">About</a>
-            <br>
-            <a href="#">Services</a>
-            <br>
-            <a href="#">Clients</a>
-            <br>
-            <a href="#">Contact</a>
-            <br>
-            <input type="button" value="Reload Page" onClick="document.location.reload(true)">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarColor01">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Map <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="tech.html">Technicain Area</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin.html">Daily report</a>
+                  </li>
+              </ul>
+              <form class="form-inline my-2 my-lg-0" method="GET">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+              </form>
             </div>
+          </nav>
         <div id="content">
         </div>
         <script src ="/js/view.js"></script>

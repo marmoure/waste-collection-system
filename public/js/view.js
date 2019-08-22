@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded",() => {
 
     mymap.on('click', onMapClick);
 
-    var greenIcon = L.icon({
+    let greenIcon = L.icon({
         iconUrl: 'icon/trash.png',
         shadowUrl: '',
         iconSize:     [15, 40], // size of the icon
@@ -38,9 +38,17 @@ document.addEventListener("DOMContentLoaded",() => {
         shadowAnchor: [4, 4],  // the same for the shadow
         popupAnchor:  [-3, -10] // point from which the popup should open relative to the iconAnchor
     });
-    
+    let redIcon = L.icon({
+        iconUrl: 'icon/trash.png',
+        shadowUrl: '',
+        iconSize:     [15, 40], // size of the icon
+        shadowSize:   [10, 20], // size of the shadow
+        iconAnchor:   [5, 10], // point of the icon which will correspond to marker's location
+        shadowAnchor: [4, 4],  // the same for the shadow
+        popupAnchor:  [-3, -10] // point from which the popup should open relative to the iconAnchor
+    });
     socket.on("mapUpdate",data => {
-        var newMap = new Map(JSON.parse(data));
+        let newMap = new Map(JSON.parse(data));
         newMap.forEach(value => {
             /*
             { temperature: 20.8,
