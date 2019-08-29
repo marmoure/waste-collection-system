@@ -25,34 +25,19 @@
             <a class="nav-link" href="admin.html">Daily report</a>
           </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0" method="GET">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-      </form>
     </div>
   </nav>
   <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">Type</th>
-        <th scope="col">Column heading</th>
-        <th scope="col">Column heading</th>
-        <th scope="col">Column heading</th>
-        <th scope="col">Column heading</th>
-        <th scope="col">Column heading</th>
+        <th scope="col">Device type</th>
+        <th scope="col">Device ID</th>
+        <th scope="col">Current state</th>
+        <th scope="col">Defects</th>
+        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody id="targetTable">
-
-      <tr>
-        <th scope="row">Default</th>
-        <td>Column content</td>
-        <td>Column content</td>
-        <td>Column content</td>
-        <td>Column content</td>
-        <td>Column content</td>
-      </tr>
-
     </tbody>
   </table> 
   <script src="/socket.io/socket.io.js"></script>

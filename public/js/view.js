@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded",() => {
     const socket = io("/");
-    socket.emit('requestData');
+    socket.emit('requestMapData');
     const positionOptions = {
         enableHighAccuracy : true,
         maxmumAge: 0
@@ -30,18 +30,18 @@ document.addEventListener("DOMContentLoaded",() => {
     mymap.on('click', onMapClick);
 
     let greenIcon = L.icon({
-        iconUrl: 'icon/trash.png',
+        iconUrl: 'icon/recycle.png',
         shadowUrl: '',
-        iconSize:     [15, 40], // size of the icon
+        iconSize:     [25, 20], // size of the icon
         shadowSize:   [10, 20], // size of the shadow
         iconAnchor:   [5, 10], // point of the icon which will correspond to marker's location
         shadowAnchor: [4, 4],  // the same for the shadow
         popupAnchor:  [-3, -10] // point from which the popup should open relative to the iconAnchor
     });
     let redIcon = L.icon({
-        iconUrl: 'icon/trash.png',
+        iconUrl: 'icon/red.png',
         shadowUrl: '',
-        iconSize:     [15, 40], // size of the icon
+        iconSize:     [25, 20], // size of the icon
         shadowSize:   [10, 20], // size of the shadow
         iconAnchor:   [5, 10], // point of the icon which will correspond to marker's location
         shadowAnchor: [4, 4],  // the same for the shadow
@@ -58,9 +58,12 @@ document.addEventListener("DOMContentLoaded",() => {
                 long: 7.09 
             }
             */
-           
            let str = "Temp: "+value.temperature + " ℃ "+"Humidity: "+value.humidity+" % "+"full: "+value.full+" %";
-            L.marker([value.lat, value.long], {icon: greenIcon}).addTo(mymap).bindPopup(str).openPopup();
+           if(value.defect == "non") {
+               L.marker([value.lat, value.long], {icon: greenIcon}).addTo(mymap).bindPopup(str).openPopup();
+           }else {
+            L.marker([value.lat, value.long], {icon: redIcon}).addTo(mymap).bindPopup(str).openPopup();
+           }
         });
     });
 

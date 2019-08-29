@@ -12,6 +12,7 @@ const socketIo = require('socket.io');
 const io = socketIo(server);
 const usersData = [];
 
+let trigger = () => {};
 fs.readFile('data.json', 'utf8', function(err, contents) {
     let str = JSON.parse(contents);
      str.users.forEach((e) => {
@@ -23,7 +24,7 @@ fs.readFile('data.json', 'utf8', function(err, contents) {
 app.use(express.static(path.join(__dirname,"public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.get("");
 
 app.post("/haja",(req,res) => {
     const {name,password} = req.body;
@@ -91,34 +92,54 @@ map.set("arduino",
                       humidity: 63,
                       full: 15,
                       lat: 36.084032,
-                      long:  7.26024
+                      long:  7.26024,
+                      defect:"non"
                     });
-
 client.on('message', (topic, message) => {
     if(topic.toString() === "update") {
         const payload = message.toString();
         const {id , data} = JSON.parse(payload);
-        console.log(data);
-        console.log(id);
-        map.set(id,data);
-        console.log(map);
+        map.set(id,
+            { temperature: data.temperature,
+              humidity: data.humidity,
+              full: data.full,
+              lat: data.lat,
+              long: data.long,
+              defect:data.defect
+            });
+        console.log(map.size);
+        trigger();
     }
 });
 
 setInterval(() => {
-    client.publish('alive', "who's there");
+    // client.publish('alive', "who's there");
 },7000);
 
 io.on("connection", socket => {
     socket.on("_ping", () => {
-        console.log("pinnng");
         socket.emit("_pong");
     });
-    socket.on("requestData", () => {
+    socket.on("requestMapData", () => {
         let transitString = JSON.stringify(Array.from(map));
-        console.log(transitString)
+        console.log("requestMapData")
         socket.emit("mapUpdate",transitString);
     });
+    socket.on("requestTechData", () => {
+        let transitString = JSON.stringify(Array.from(map));
+        console.log("requestTechData")
+        socket.emit("techUpdate",transitString);
+    });
+    socket.on("requestAdminData", () => {
+        let transitString = JSON.stringify(Array.from(map));
+        socket.emit("adminUpdate",transitString);
+    });
+    trigger= () => {
+        let transitString = JSON.stringify(Array.from(map));
+        socket.emit("mapUpdate",transitString);
+        socket.emit("techUpdate",transitString);
+        socket.emit("adminUpdate",transitString);
+    };
 });
 
 

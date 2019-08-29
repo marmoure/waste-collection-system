@@ -1,6 +1,24 @@
 document.addEventListener("DOMContentLoaded",() => {
     const socket = io("/");
 
-    document.querySelector("#targetTable").innerHTML += `<tr><th scope='row'>Default</th><td>${"somthing"}</td> <td>Column content</td> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr>`
-
+    socket.emit('requestTechData');
+    socket.on("techUpdate",data => {
+        document.querySelector("#targetTable").innerHTML = "";
+        console.log("gotTechData");
+        let newMap = new Map(JSON.parse(data));
+        newMap.forEach((value ,key)=> {
+            /*
+            { temperature: 20.8,
+                humidity: 63,
+                full: 80,
+                lat: 36.324,
+                long: 7.09 ,
+                defect:""
+            }
+            */
+           if(value.defect != "non") {
+               document.querySelector("#targetTable").innerHTML += `<tr><th scope='row'>${"Collection sensor"}</th><td>${key}</td> <td>${"Waiting for pick up"}</td> <td>${value.defect}</td> <td>${"retrive"}</td> </tr>`
+           }
+        });
+    });
 });
