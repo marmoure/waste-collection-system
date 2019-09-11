@@ -12,7 +12,7 @@ const socketIo = require('socket.io');
 const io = socketIo(server);
 const usersData = [];
 let trigger = () => {};
-
+let sendWorkersData = () => {};
 
 //mqtt
 const mqtt = require('mqtt');
@@ -109,8 +109,10 @@ app.post("/haja",(req,res) => {
 });
 
 app.post("/add",(req,res) => {
-    console.log(req.body);
+    const data = req.body;
+    // console.log(data);
     //TODO add data to database
+    checkData(data,res);
 });
 
 server.listen(3000, err => {
@@ -132,6 +134,9 @@ io.on("connection", socket => {
         console.log("requestMapData")
         socket.emit("mapUpdate",transitString);
     });
+    socket.on("requestWorkersData", () => {
+        getWorkersData();
+    });
     socket.on("requestTechData", () => {
         let transitString = JSON.stringify(Array.from(map));
         console.log("requestTechData")
@@ -147,25 +152,41 @@ io.on("connection", socket => {
         socket.emit("techUpdate",transitString);
         socket.emit("adminUpdate",transitString);
     };
+    sendWorkersData = (data) => {
+        let transitString = JSON.stringify(data);
+        socket.emit("workersUpdate",transitString);
+    };
 });
 //socketio
 
-
+const getWorkersData = () => {
+    con.query(`SELECT * FROM users`, function (error, results, fields) {
+        if (error) throw error;
+        sendWorkersData(results);
+    });
+};
 
 // my functions
 const checkCredentials = (name,pass,res) => {
     //TODO use database
+    console.log("chechiknggg");
     let mytype = 0;
     con.query(`SELECT * FROM users WHERE username = "${name}"`, function (error, results, fields) {
         if (error) {
             mytype = 0;
             console.log("EROOOR in query");
         }else {
-            let mypass = results[0].pass;
-            console.log(mypass);
-            if (mypass == pass) {
-                mytype=results[0].usesrtype ;
-                redirectUser(mytype,res);
+            if(results.length == 0) {
+                console.log("gotnothing");
+                redirectUser(0,res);
+            }else {
+                let mypass = results[0].pass;
+                if (mypass == pass) {
+                    mytype=results[0].usertype;
+                    redirectUser(mytype,res);
+                }else {
+                    redirectUser(0,res);
+                }
             }
         }
     });
@@ -174,16 +195,54 @@ const checkCredentials = (name,pass,res) => {
 
 const redirectUser = (type,res) => {
     if( type != 0) {
-        console.log(type);
+        console.log("redirecting here",type);
         if(type == 3)
-            res.redirect(200,'/view.html');
+            res.redirect('/view.html');
         if(type == 2)
-            res.redirect(200,'/tech.html');
+            res.redirect('/tech.html');
         if(type == 1)
-            res.redirect(200,'/admin.html');
+            res.redirect('/admin.html');
     }else {
         res.redirect(401, '/');
     }
-}
+};
 
+const checkData = (data,res) => {
+    const {name,password,password2,admin,tech,collec} = data;
+    console.log(name,password,password2,admin,tech,collec);
+    con.query(`SELECT * FROM users WHERE username = "${name}"`, function (error, results, fields) {
+        if (error) {
+        }else {
+            // console.log(results);
+            if(results.length == 0) {
+                addUser(data,res)
+            }else {
+                console.log("here on found user");
+                res.redirect(406,'/register.html');
+            }
+        }
+    });
+
+};
+
+const addUser = (data,res) => {
+    const {name,password,password2,admin,tech,collec} = data;
+    let usertype = 0;
+    if(admin != undefined) usertype = 1;
+    else if(tech != undefined) usertype = 2;
+    else if(collec != undefined) usertype = 3;
+    if(usertype == 0 || password != password2) {
+        console.log("here on adduser");
+        res.redirect(406,'/register.html');
+    }   
+    else {
+        let query = `INSERT INTO users (id, username, pass, usertype, reg_date, last_login) VALUES (NULL, "${name}", "${password}", ${usertype}, current_timestamp(), current_timestamp())`
+        console.log(query);
+        con.query(query, function (error, results, fields) {
+                if (error) throw error;
+                console.log(results);
+              });
+        res.redirect(201,'/admin.html');
+    }
+};
 // {"id":"arduino","data":{"temperature":20.80,"humidity":63.00,"full":15.00,"lat":36.084032,"long":7.26024}}

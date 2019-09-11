@@ -46,13 +46,18 @@
                 />
               </div>
               <div class="form-group">
-                  <label for="select" class="col-lg-2 control-label">User type</label>
-
-                  <select class="form-control" id="select">
-                    <option>Admin</option>
-                    <option>Collector</option>
-                    <option>Technician</option>
-                  </select>
+                  <label for="select" class="col-lg-2 control-label">User type</label><br>
+                  <label for="select" class="col-lg-2 control-label">Admin</label>
+                  <input type="checkbox" name="admin" id="ad"><br>
+                  <label for="select" class="col-lg-2 control-label">Tech</label>
+                  <input type="checkbox" name="tech" id="te"><br>
+                  <label for="select" class="col-lg-2 control-label">Collector</label>
+                  <input type="checkbox" name="collec" id="co"><br>
+                  <!-- <select class="form-control" id="select">
+                    <option value=1>Admin</option>
+                    <option value=3>Collector</option>
+                    <option value=4>Technician</option>
+                  </select> -->
 
               </div>
               <button type="submit" class="btn btn-primary btn-block">
@@ -62,5 +67,6 @@
           </div>
         </div>
       </div>
+      <script src="/js/register.js"></script>
 </body>
 </html>
