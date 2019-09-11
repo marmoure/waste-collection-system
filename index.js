@@ -135,6 +135,7 @@ io.on("connection", socket => {
         socket.emit("mapUpdate",transitString);
     });
     socket.on("requestWorkersData", () => {
+        console.log("requestMapData");
         getWorkersData();
     });
     socket.on("requestTechData", () => {
