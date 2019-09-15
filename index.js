@@ -5,6 +5,7 @@ const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const readline = require('readline');
 const app = express();
 const router= express.Router();
 const server = http.createServer(app);
@@ -27,6 +28,7 @@ const options = {
 const client  = mqtt.connect('tcp://m16.cloudmqtt.com:15142',options);
 
 
+
 //mqttfunction
 client.on('connect',  () => {
     client.subscribe('here',(err) => {
@@ -40,8 +42,40 @@ client.on('connect',  () => {
         }
       });
 });
+//adding demo
 
 let map = new Map();
+///
+
+// create instance of readline
+// each instance is associated with single input stream
+let rl = readline.createInterface({
+    input: fs.createReadStream('addons')
+});
+
+let line_no = 0;
+
+// event is emitted after each line
+rl.on('line', function(line) {
+    line_no++;
+    const {id,data} = JSON.parse(line);
+    map.set(id,
+        { temperature: data.temperature,
+          humidity: data.humidity,
+          full: data.full,
+          lat: data.lat,
+          long: data.long,
+          defect:data.defect
+        });
+        trigger();
+});
+
+// end
+rl.on('close', function(line) {
+    console.log('Total lines : ' + line_no);
+});
+
+///
 map.set("arduino",
                     { temperature: 20.8,
                       humidity: 63,
@@ -80,7 +114,10 @@ const con = mysql.createConnection({
 });
 
 con.connect(function(err) {
-  if (err) throw err;
+  if (err) {
+    //   throw err;
+    console.log("DATABASE not Connected!");
+}
   console.log("DATABASE Connected!");
 });
 

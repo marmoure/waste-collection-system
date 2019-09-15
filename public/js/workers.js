@@ -28,7 +28,12 @@ let id = value.id;
         //   <td>Active</td> 
         //   <td>2019-09-10T13:37:07</td> 
         // </tr>
-            document.querySelector("#targetTable").innerHTML += `<tr><th scope='row'>${usertype}</th><td>${id}</td> <td>${"active"}</td> <td>${last_login}</td> </tr>`;
+        let active = "";
+        let act = Math.random();
+        act *= 10;
+        (act %2 == 0)?(active = "Active"):(active="Not active"); 
+        if(id == 1) active = "Active";
+            document.querySelector("#targetTable").innerHTML += `<tr><th scope='row'>${usertype}</th><td>${id}</td> <td>${name}</td><td>${active}</td> <td>${last_login}</td> </tr>`;
         });
     });
 });

@@ -16,4 +16,20 @@ document.addEventListener("DOMContentLoaded",() => {
          document.querySelector("#resume").innerHTML = `Daily Progress ${percent}%`;
          document.querySelector("#progress-bar").style.width = `${percent}%`;
     });
+    socket.emit('requestWorkersData');
+    socket.on("workersUpdate",data => {
+        let workersData = JSON.parse(data);
+        let admins = 0;
+        let tech = 0;
+        let collec = 0;
+        workersData.forEach((value)=> {
+            if(value.usertype == 1) admins++;
+            if(value.usertype == 2) tech++;
+            if(value.usertype == 3) collec++;
+            console.log(value.id);
+        });
+        document.querySelector("#worker").innerHTML = tech+collec;
+        document.querySelector("#colec").innerHTML = tech;
+        document.querySelector("#tech").innerHTML = collec;
+    });
 });

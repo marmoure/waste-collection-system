@@ -1,0 +1,9 @@
+{"id":"one","data":{"temperature":20.80,"humidity":63.00,"full":45.00,"lat":36.084309, "long":7.257154,"defect":"non"}}
+{"id":"three","data":{"temperature":20.80,"humidity":63.00,"full":85.00,"lat":36.08313, "long":7.232701,"defect":"temp"}}
+{"id":"four","data":{"temperature":20.80,"humidity":63.00,"full":25.00,"lat":36.082506, "long":7.259885,"defect":"humid"}}
+{"id":"fifth","data":{"temperature":20.80,"humidity":63.00,"full":13.00,"lat":36.082237, "long":7.263409,"defect":"non"}}
+{"id":"six","data":{"temperature":20.80,"humidity":63.00,"full":41.00,"lat":36.084344, "long":7.257552,"defect":"non"}}
+{"id":"seven","data":{"temperature":20.80,"humidity":63.00,"full":76.00,"lat":36.08117, "long":7.262829,"defect":"non"}}
+{"id":"eight","data":{"temperature":20.80,"humidity":63.00,"full":90.00,"lat":36.081292, "long":7.259998,"defect":"non"}}
+{"id":"nine","data":{"temperature":20.80,"humidity":63.00,"full":11.00,"lat":36.08143, "long":7.255493,"defect":"non"}}
+{"id":"ten","data":{"temperature":20.80,"humidity":63.00,"full":98.00,"lat":36.08424, "long":7.255396,"defect":"non"}}
