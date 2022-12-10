@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "mapbox-gl": "^0.53.1",
     "mqtt": "^2.18.8",
     "mqtt-packet": "^6.2.1",
