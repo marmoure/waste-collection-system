@@ -11,7 +11,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mapbox-gl": "^0.53.1",
+    "mapbox-gl": "^2.13.0",
     "mqtt": "^2.18.8",
     "mqtt-packet": "^6.2.1",
     "mysql": "^2.17.1",
